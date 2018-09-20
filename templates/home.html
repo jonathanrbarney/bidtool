@@ -2,13 +2,25 @@
 
 {% block nav %}
 <div id ='header'>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-dark bg-dark">
   <a class=" text-white navbar-brand">BidTool</a>
-
-    <form class="form-inline my-2 my-lg-0 ml-auto" method="get">
-      <input class="form-control mr-sm-2" name="name" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    <div class="container w-100">
+    <form class="w-100 form-inline m-2" method="get" id="filter">
+        <div class="row p-0 m-0 w-100">
+        <select name="country" id="country" class="selectpicker form-control m-2 col-sm-6" multiple data-live-search="true" title="Filter By Location">
+            {% for i in countries %}
+            {% if i in selected %}
+            <option selected="selected">{{i}}</option>
+            {%else%}
+            <option>{{i}}</option>
+            {%endif%}
+            {% endfor %}
+            </select>
+      <input class="form-control m-2 w-100 col-sm-4" name="name" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success m-2 w-100 col-sm-1" type="submit">Search</button>
+        </div>
     </form>
+        </div>
 </nav>
     </div>
 
@@ -16,46 +28,6 @@
 
 {% block content %}
    <div id="map" class="w-100"></div>
-    <script>
-
-function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 1,
-        });
-        var bounds = new google.maps.LatLngBounds();
-        {% for embassy in embassies %}
-        var position = new google.maps.LatLng({{embassy.latitude}}, {{embassy.longitude}});
-        bounds.extend(position);
-        marker = new google.maps.Marker({
-            position: position,
-            map: map,
-            title: '{{embassy.name}}'
-        });
-
-        var contentString = '{{embassy.name}}'
-
-       var infowindow = new google.maps.InfoWindow({
-        content: contentString
-        });
-
-	//creates an infowindow 'key' in the marker.
-	marker.infowindow = infowindow;
-
-	//finally call the explicit infowindow object
-	marker.addListener('click', function() {
-		return this.infowindow.open(map, this);
-	})
-
-	// Alternate way of adding infowindow listeners
-	google.maps.event.addListener(marker, 'click', function() {
-	 	this.infowindow.open(map, this);
-	});
-
-         map.fitBounds(bounds);
-        {% endfor %}
-      }
-
-    </script>
 {% endblock %}
 {% block scripts %}
 <script>
@@ -120,4 +92,7 @@ function initMap() {
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSsVAP7FL3SBEFB-ZUnCigY9GUQfZvJL8&callback=initMap">
     </script>
+<script>
+$('select').selectpicker();
+</script>
 {% endblock %}

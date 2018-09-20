@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block nav %}
+<div id ='header'>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class=" text-white navbar-brand">BidTool</a>
+
+    <form class="form-inline my-2 my-lg-0 ml-auto" method="get">
+      <input class="form-control mr-sm-2" name="name" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</nav>
+    </div>
+
+{% endblock %}
+
+{% block content %}
+   <div id="map" class="w-100"></div>
+    <script>
+
+function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 1,
+        });
+        var bounds = new google.maps.LatLngBounds();
+        {% for embassy in embassies %}
+        var position = new google.maps.LatLng({{embassy.latitude}}, {{embassy.longitude}});
+        bounds.extend(position);
+        marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: '{{embassy.name}}'
+        });
+
+        var contentString = '{{embassy.name}}'
+
+       var infowindow = new google.maps.InfoWindow({
+        content: contentString
+        });
+
+	//creates an infowindow 'key' in the marker.
+	marker.infowindow = infowindow;
+
+	//finally call the explicit infowindow object
+	marker.addListener('click', function() {
+		return this.infowindow.open(map, this);
+	})
+
+	// Alternate way of adding infowindow listeners
+	google.maps.event.addListener(marker, 'click', function() {
+	 	this.infowindow.open(map, this);
+	});
+
+         map.fitBounds(bounds);
+        {% endfor %}
+      }
+
+    </script>
+{% endblock %}
+{% block scripts %}
+<script>
+$(function () {
+    "use strict";
+    var resizeDiv = function (object) {
+        object.height($(window).height() - $('#header').height());
+    };
+
+
+    $(window).ready(function () {
+        resizeDiv($('#map'));
+    });
+
+    $(window).bind("resize", function () {
+        resizeDiv($('#map'));
+    });
+
+});
+</script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSsVAP7FL3SBEFB-ZUnCigY9GUQfZvJL8&callback=initMap">
+    </script>
+{% endblock %}

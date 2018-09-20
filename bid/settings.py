@@ -124,7 +124,16 @@ STATIC_ROOT = os.path.dirname(BASE_DIR) + '/public/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.dirname(BASE_DIR) + '/public/media/'
 
-SECURE_SSL_REDIRECT = False
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__name__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+#SECURE_HSTS_SECONDS = 10
+SECURE_SSL_REDIRECT = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+DEBUG = False
+
+X_FRAME_OPTIONS = 'DENY'

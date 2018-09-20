@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bidtool.apps.BidtoolConfig',
+    'leaflet',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,11 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 DEBUG = False
 
 X_FRAME_OPTIONS = 'DENY'
+
+LEAFLET_CONFIG = {
+'MIN_ZOOM': 2,
+'MAX_ZOOM': 19,
+
+    'TILES': [('Wikimedia','https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png?lang=en', {
+        'attribution': '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>'})]
+}

@@ -25,7 +25,7 @@ SECRET_KEY = '!rm73aoo2fs96^jlbr#==tzn3g(nxxdmpvh(c^iuq5%@0ib$_('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['elichor.com']
+ALLOWED_HOSTS = ['127.0.0.1','elichor.com','localhost']
 
 
 # Application definition

@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
+{% load i18n staticfiles %}
 {% load leaflet_tags %}
 
 {% block nav %}
 <div id ='header'>
-<nav class="navbar navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class=" text-white navbar-brand">BidTool</a>
-    <div class="container w-100">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navvy" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <div class="w-100 navbar-collapse" id="navvy" aria-expanded="false" >
     <form class="w-100 form-inline m-2" method="get" id="filter">
-        <div class="row p-0 m-0 w-100">
+        <div class="row p-0 m-0 w-100 nav-item">
         <select name="country" id="country" class="selectpicker form-control m-2 col-sm-6" multiple data-live-search="true" title="Filter By Location">
             {% for i in countries %}
             {% if i in selected %}
@@ -17,8 +21,8 @@
             {%endif%}
             {% endfor %}
             </select>
-      <input class="form-control m-2 w-100 col-sm-4" name="name" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success m-2 w-100 col-sm-1" type="submit">Search</button>
+      <input class="form-control m-2 w-100 col-sm-4 nav-item" name="name" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success m-2 w-100 col-sm-1 nav-item" type="submit">Search</button>
         </div>
     </form>
         </div>
@@ -33,12 +37,38 @@ var mapper;
 var mark;
 var group;
         function map_init_basic (map, options) {
+
+var redIcon = new L.Icon({
+  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+var blackIcon = new L.Icon({
+  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+var greyIcon = new L.Icon({
+  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
         mapper=map;
         track=0;
         arr=[];
         {% for embassy in embassies %}
         var latlng = L.latLng(Number({{embassy.latitude}}), Number({{embassy.longitude}}));
-        var marker = L.marker(latlng);
+        var marker = L.marker(latlng, {icon: blackIcon});
         arr.push(marker)
         track=track+1;
         marker.bindPopup('<p>{{embassy.name}}<br /><a href="{{embassy.website}}">{{embassy.website}}</a></p>');
@@ -84,5 +114,6 @@ $(function () {
 
 <script>
 $('select').selectpicker();
+
 </script>
 {% endblock %}

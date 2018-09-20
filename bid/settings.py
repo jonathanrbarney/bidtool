@@ -124,7 +124,7 @@ STATIC_ROOT = os.path.dirname(BASE_DIR) + '/public/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.dirname(BASE_DIR) + '/public/media/'
 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__name__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))

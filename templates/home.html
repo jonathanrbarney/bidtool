@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load leaflet_tags %}
 
 {% block nav %}
 <div id ='header'>
@@ -27,7 +28,35 @@
 {% endblock %}
 
 {% block content %}
-   <div id="map" class="w-100"></div>
+<script type="text/javascript">
+var mapper;
+var mark;
+var group;
+        function map_init_basic (map, options) {
+        mapper=map;
+        track=0;
+        arr=[];
+        {% for embassy in embassies %}
+        var latlng = L.latLng(Number({{embassy.latitude}}), Number({{embassy.longitude}}));
+        var marker = L.marker(latlng);
+        arr.push(marker)
+        track=track+1;
+        marker.bindPopup('<p>{{embassy.name}}<br /><a href="{{embassy.website}}">{{embassy.website}}</a></p>');
+    {% endfor %}
+    if(track==1){
+    marker.addTo(map);
+    map.setView([marker.getLatLng().lat,marker.getLatLng().lng], 13);
+    }else{
+group = L.featureGroup(arr).addTo(map);
+map.fitBounds(group.getBounds());
+}
+
+}
+</script>
+
+
+{% leaflet_map "map" callback="window.map_init_basic" %}
+
 {% endblock %}
 {% block scripts %}
 <script>
@@ -40,58 +69,19 @@ $(function () {
 
     $(window).ready(function () {
         resizeDiv($('#map'));
+        mapper.invalidateSize();
+        mapper.fitBounds(group.getBounds());
     });
 
     $(window).bind("resize", function () {
         resizeDiv($('#map'));
+        mapper.invalidateSize()
+
     });
 
 });
 </script>
 
-    <script>
-
-function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 1,
-        });
-        var bounds = new google.maps.LatLngBounds();
-        {% for embassy in embassies %}
-        var position = new google.maps.LatLng({{embassy.latitude}}, {{embassy.longitude}});
-        bounds.extend(position);
-        marker = new google.maps.Marker({
-            position: position,
-            map: map,
-            title: '{{embassy.name}}'
-        });
-
-        var contentString = '{{embassy.name}}<br><a href="{{embassy.website}}">{{embassy.website}}</a>'
-
-       var infowindow = new google.maps.InfoWindow({
-        content: contentString
-        });
-
-	//creates an infowindow 'key' in the marker.
-	marker.infowindow = infowindow;
-
-	//finally call the explicit infowindow object
-	marker.addListener('click', function() {
-		return this.infowindow.open(map, this);
-	})
-
-	// Alternate way of adding infowindow listeners
-	google.maps.event.addListener(marker, 'click', function() {
-	 	this.infowindow.open(map, this);
-	});
-
-         map.fitBounds(bounds);
-        {% endfor %}
-      }
-
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSsVAP7FL3SBEFB-ZUnCigY9GUQfZvJL8&callback=initMap">
-    </script>
 <script>
 $('select').selectpicker();
 </script>

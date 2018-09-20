@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bidtool.apps.BidtoolConfig',
+    'leaflet',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,11 @@ SECURE_SSL_REDIRECT = False
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__name__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+LEAFLET_CONFIG = {
+'MIN_ZOOM': 2,
+'MAX_ZOOM': 19,
+
+    'TILES': [('Wikimedia','https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png?lang=en', {
+        'attribution': '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>'})]
+}
+

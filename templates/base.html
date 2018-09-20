@@ -1,4 +1,5 @@
 {% load i18n staticfiles %}
+{% load leaflet_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +19,10 @@
 
     <!-- Custom fonts for this template-->
     <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+
+        {% leaflet_js %}
+        {% leaflet_css %}
 
 </head>
 <body>
@@ -31,8 +36,6 @@
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-select.js' %}"></script>
-
-
 {% block scripts %}
 {% endblock %}
 </body>

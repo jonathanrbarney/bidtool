@@ -65,7 +65,7 @@ function initMap() {
             title: '{{embassy.name}}'
         });
 
-        var contentString = '{{embassy.name}}'
+        var contentString = '{{embassy.name}}<br><a href="{{embassy.website}}">{{embassy.website}}</a>'
 
        var infowindow = new google.maps.InfoWindow({
         content: contentString
